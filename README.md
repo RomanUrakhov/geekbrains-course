@@ -1,4 +1,4 @@
-# Lesson 1 WSGI-Framework & App
+# Lesson 2 GET/POST Processing
 
 ## Установка (локально)
 
