@@ -1,18 +1,18 @@
-from urllib.parse import parse_qs
+from flex_framework.request import BaseRequest
 
 
 class Flex:
     def __init__(self, routes, middlewares=None):
         self._routes = routes
-        self._middlewares = [default_argparse_middleware]
-        middlewares and self._middlewares.extend(middlewares)  # extend if not empty
+        self._middlewares = middlewares
 
     def __call__(self, environ, start_response):
-        request = {'url': environ['PATH_INFO'], 'args': environ['QUERY_STRING']}
+        request = BaseRequest(environ)
+
         for middleware in self._middlewares:
             middleware(request)
 
-        route = self._routes.get(request['url'], handle_error)
+        route = self._routes.get(request.url, handle_error)
 
         status_code, body = route(request)
 
@@ -20,25 +20,13 @@ class Flex:
         return [body.encode('utf-8')]
 
 
-def default_argparse_middleware(request):
-    """
-    Предопределенный Middleware, парсящий строку аргументов запроса
-    """
-    raw_arguments = request['args']
-    request['args'] = {}
-    parsed_qs = parse_qs(raw_arguments)
-    for key, value in parsed_qs.items():
-        request['args'][key] = value[0]
-    return request
-
-
-def trailing_slash_middleware(request):
+def trailing_slash_middleware(request: BaseRequest):
     """
     Опциональный Middleware, добавляющий в конец URL слеш
     """
-    raw_url = request['url']
+    raw_url = request.url
     if not raw_url.endswith('/'):
-        request['url'] = f'{raw_url}/'
+        request.url = f'{raw_url}/'
     return request
 
 
