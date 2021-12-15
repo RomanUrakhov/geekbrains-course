@@ -1,7 +1,7 @@
 from flex_framework.core import trailing_slash_middleware
+from flex_framework.request import BaseRequest
 
 import config
-from request import BaseRequest
 from routes import extra_materials, all_courses, advanced_courses, index, my_favourites, feedback
 
 

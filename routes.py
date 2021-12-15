@@ -1,7 +1,7 @@
 from flex_framework.template_manager import render_template
+from flex_framework.request import BaseRequest
 
 from repository import list_articles, list_courses, get_my_favourites
-from request import BaseRequest
 
 
 def index(request: BaseRequest):
