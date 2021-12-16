@@ -7,7 +7,7 @@ from urls import routes, middlewares
 app = Flex(routes=routes, middlewares=middlewares)
 
 if __name__ == '__main__':
-    with make_server('', 8080, app) as httpd:
+    with make_server('127.0.0.1', 8080, app) as httpd:
         sa = httpd.socket.getsockname()
         print(f"Running at: http://{sa[0]}:{sa[1]}")
         httpd.serve_forever()
