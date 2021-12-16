@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    {% include 'inc-styles.html' %}
+{% endblock %}
+
+{% block title %}Articles - Flex Python{% endblock %}
+
+{% block menu %}
+    {% include 'inc-menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>All Articles</h1>
+    </div>
+    {% for article in articles %}
+        <div>
+            <h2>{{ article['name'] }}</h2>
+            <p>
+                <span>{{ article['author'] }}</span>
+                <span>{{ article['created_date'].strftime('%b %m, %Y') }}</span>
+            </p>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,22 +1,28 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    {% include 'inc-styles.html' %}
+{% endblock %}
+{% block title %}Home - Flex Python{% endblock %}
+
+{% block menu %}
+    {% include 'inc-menu.html' %}
+{% endblock %}
+
 {% block content %}
     <div>
-        <h1>Flex Python Articles</h1>
+        <h1>Flex Python Materials</h1>
     </div>
 
-    <div>
-        <form action="" method="GET" id="index-search-form">
-            <input type="search" placeholder="Find Tutorials, Courses, Quizzes..." aria-label="Search">
-            <input type="hidden" name="_from" value="home">
-        </form>
-        <button type="submit" form="index-search-form">Search</button>
-    </div>
-
-    {% for article in articles %}
-    <div>
-        <h2>{{ article['name'] }}</h2>
-        <p>Posted at: {{ article['created_date'].strftime('%b %m, %Y') }}</p>
-    </div>
+    {% for material in materials %}
+        <div>
+            <a href="/{{ material }}"><h2>{{ material|capitalize }}</h2></a>
+            {% for item in materials[material] %}
+                <div>
+                    <h3>{{ item['name'] }}</h3>
+                    <p>Posted at: {{ item['created_date'].strftime('%b %m, %Y') }}</p>
+                </div>
+            {% endfor %}
+        </div>
     {% endfor %}
 {% endblock %}

@@ -2,7 +2,7 @@ from flex_framework.core import trailing_slash_middleware
 from flex_framework.request import BaseRequest
 
 import config
-from routes import extra_materials, all_courses, advanced_courses, index, my_favourites, feedback
+from routes import all_courses, advanced_courses, index, feedback, articles
 
 
 def token_auth_middleware(request: BaseRequest):
@@ -17,9 +17,9 @@ middlewares = [token_auth_middleware, trailing_slash_middleware]
 
 routes = {
     '/': index,
+    '/courses/': all_courses,
     '/courses/all/': all_courses,
     '/courses/advanced/': advanced_courses,
-    '/my-favourites/': my_favourites,
-    '/extra_materials/': extra_materials,
+    '/articles/': articles,
     '/feedback/': feedback
 }

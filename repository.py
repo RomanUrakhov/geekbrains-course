@@ -7,17 +7,20 @@ def list_articles() -> List[dict]:
         {
             'id': 'A',
             'name': 'Data Visualization Interfaces in Python With Dash',
-            'created_date': date(2021, 11, 30)
+            'created_date': date(2021, 11, 30),
+            'author': 'Jonathan Berg'
         },
         {
             'id': 'B',
             'name': 'Python Community Interview With Eric Wastl',
-            'created_date': date(2021, 11, 22)
+            'created_date': date(2021, 11, 22),
+            'author': 'Admiral Bulldog'
         },
         {
             'id': 'C',
             'name': 'Securely Deploy a Django App With Gunicorn, Nginx, & HTTPS',
-            'created_date': date(2021, 11, 15)
+            'created_date': date(2021, 11, 15),
+            'author': 'Notail'
         }
     ]
 
@@ -40,7 +43,8 @@ def list_courses(category='all') -> List[dict]:
                     'name': 'The Zen of Python',
                     'duration': 1.42
                 }
-            ]
+            ],
+            'created_date': date(2021, 12, 16)
         },
         {
             'id': 'G',
@@ -58,7 +62,8 @@ def list_courses(category='all') -> List[dict]:
                     'name': 'Parameter Passing',
                     'duration': 3.53
                 }
-            ]
+            ],
+            'created_date': date(2021, 12, 17)
         },
         {
             'id': 'J',
@@ -81,7 +86,8 @@ def list_courses(category='all') -> List[dict]:
                     'name': 'Using Implicit Returns in Functions',
                     'duration': 3.15
                 }
-            ]
+            ],
+            'created_date': date(2021, 12, 20)
         },
     ]
     return courses if category == 'all' else [course for course in courses if course['category'] == category]

@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    {% include 'inc-styles.html' %}
+{% endblock %}
+
+{% block title %}Courses - Flex Python{% endblock %}
+
+{% block menu %}
+    {% include 'inc-menu.html' %}
+{% endblock %}
+
 {% block content %}
     <div>
-        <h1>All Courses</h1>
+        <h1>{{ category|capitalize }} Courses</h1>
     </div>
+
+    {% if category == 'all' %}
+        <h2>Additional categories</h2>
+        {% for c in additional_categories %}
+            <a href="/courses/{{ c }}"><h3>{{ c }}</h3></a>
+        {% endfor %}
+    {% endif %}
 
     {% for course in courses %}
         <div>
