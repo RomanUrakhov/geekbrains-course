@@ -48,7 +48,7 @@ class BaseRequest:
         if data:
             parsed_qs = parse_qs(data)
             for key, value in parsed_qs.items():
-                res[key] = value[0]
+                res[key] = value[0] if len(value) == 1 else value
         return res
 
     def _parse_default_form(self, data: bytes):

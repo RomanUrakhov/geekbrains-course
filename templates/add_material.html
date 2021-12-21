@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    {% include 'inc-styles.html' %}
+{% endblock %}
+
+{% block title %}Materials - Flex Python{% endblock %}
+
+{% block menu %}
+    {% include 'inc-menu.html' %}
+{% endblock %}
+
+{% block content %}
+    <a href="/">Back to homepage</a>
+
+    <h1>Add new material</h1>
+    <form method="post">
+        <label for="material-type-select">Material type:</label>
+        <select name="material_type" id="material-type-select">
+            <option value="">--select material type--</option>
+            <option value="article">Article</option>
+            <option value="course">Course</option>
+        </select>
+        <input type="text" name="name" placeholder="Name">
+        <input type="text" name="author" placeholder="Author">
+        {% if tags|length > 0 %}
+            <label for="related-tags-selector">Select related tags:</label>
+            <select id="related-tags-selector" multiple name="tags">
+                <option value=""></option>
+                {% for i in tags %}
+                    <option value="{{ i.name }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
