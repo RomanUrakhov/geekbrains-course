@@ -1,9 +1,9 @@
-# Lesson 3 Template extension
+# Lesson 4 Creational patterns
 
 ## Что сделано
-* Добавлена возможность расширения/включения шаблонов
-* Добавлен базовый шаблон
-* Добавлен шаблон с меню
+* Реализован Singleton (класс FlexLogger)
+* Реализован Prototype (класс MaterialPrototype)
+* Реализован Factory Method (класс MaterialFactory) 
 
 
 ## Установка (локально)
