@@ -1,37 +1,46 @@
 from datetime import datetime
 
+from app import app
+from app.patterns.structural import profile
 from flex_framework.template_manager import render_template
 from flex_framework.request import BaseRequest
-from patterns.creational import FlexEngine, FlexLogger
+from app.patterns.creational import FlexEngine, FlexLogger
 
-from repository import list_articles, list_courses, get_my_favourites
+from app.repository import list_articles, list_courses, get_my_favourites
 
 engine = FlexEngine()
 logger = FlexLogger()
 
 
+@app.route('/')
+@profile
 def index(request: BaseRequest):
     logger.log('Open index page')
     return '200 OK', render_template('index.html', materials=engine.materials)
 
 
+@app.route('/courses/')
+@app.route('/courses/all')
 def all_courses(request: BaseRequest):
     courses = list_courses()
     return '200 OK', render_template('courses.html', category='all', additional_categories=['advanced'],
                                      courses=courses)
 
 
+@app.route('/courses/advanced')
 def advanced_courses(request: BaseRequest):
     category = 'advanced'
     courses = list_courses(category=category)
     return '200 OK', render_template('courses.html', category=category, courses=courses)
 
 
+@app.route('/articles/')
 def articles(request: BaseRequest):
     articles = list_articles()
     return '200 OK', render_template('articles.html', articles=articles)
 
 
+@app.route('/favourites/')
 def my_favourites(request: BaseRequest):
     if request.headers.get('Custom-Authorized'):
         favourites = get_my_favourites()
@@ -39,6 +48,7 @@ def my_favourites(request: BaseRequest):
     return '403 Forbidden', 'Unauthorized error'
 
 
+@app.route('/feedback/')
 def feedback(request: BaseRequest):
     if request.method == 'GET':
         return '200 OK', render_template('feedback.html')
@@ -48,6 +58,7 @@ def feedback(request: BaseRequest):
         return '200 OK', render_template('feedback.html')
 
 
+@app.route('/tags/')
 def tags(request: BaseRequest):
     if request.method == 'GET':
         return '200 OK', render_template('tags.html', tags=engine.tags)
@@ -61,6 +72,7 @@ def tags(request: BaseRequest):
         return '200 OK', render_template('tags.html', tags=engine.tags)
 
 
+@app.route('/add-material/')
 def add_material(request: BaseRequest):
     if request.method == 'GET':
         return '200 OK', render_template('add_material.html', tags=engine.tags)
@@ -84,6 +96,7 @@ def add_material(request: BaseRequest):
         return '200 OK', render_template('index.html', materials=engine.materials)
 
 
+@app.route('/copy-material/')
 def copy_material(request: BaseRequest):
     material_name = request.args.get('name')
     if material_name:
@@ -96,6 +109,7 @@ def copy_material(request: BaseRequest):
     return '400 BAD REQUEST', "Can't copy material without specifying a source 'name'"
 
 
+@app.route('/materials/')
 def material_list(request: BaseRequest):
     material_tags = request.args.get('tags')
     if material_tags:

@@ -1,10 +1,6 @@
 from wsgiref.simple_server import make_server
-from flex_framework.core import Flex
 
-from urls import routes, middlewares
-
-
-app = Flex(routes=routes, middlewares=middlewares)
+from app import app
 
 if __name__ == '__main__':
     with make_server('127.0.0.1', 8080, app) as httpd:

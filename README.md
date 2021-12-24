@@ -1,10 +1,9 @@
-# Lesson 4 Creational patterns
+# Lesson 5 Structural patterns
 
 ## Что сделано
-* Реализован Singleton (класс FlexLogger)
-* Реализован Prototype (класс MaterialPrototype)
-* Реализован Factory Method (класс MaterialFactory) 
-
+* Реализован Decorator:  
+  * flask-like `@route('/')`
+  * для профилирования `@profile`
 
 ## Установка (локально)
 
