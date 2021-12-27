@@ -40,6 +40,7 @@ class BaseRequest:
         content_length_data = self._env.get('CONTENT_LENGTH')
         content_length = int(content_length_data) if content_length_data else 0
         body = self._env['wsgi.input'].read(content_length) if content_length > 0 else b''
+        self._cached_body = body
         return body
 
     @staticmethod
@@ -67,7 +68,11 @@ class BaseRequest:
         content_type = self._env.get('CONTENT_TYPE', '').lower()
         parser_call = parsers.get(content_type)
         raw_data = self.body()
-        return parser_call(raw_data)
+        if raw_data:
+            form_data = parser_call(raw_data)
+            self._cached_form = form_data
+            return form_data
+        return {}
 
     def set_header(self, name, value):
         self._headers[name] = value
