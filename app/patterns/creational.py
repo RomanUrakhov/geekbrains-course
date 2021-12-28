@@ -1,5 +1,8 @@
 from copy import deepcopy
 from datetime import datetime
+from typing import List
+
+from app.patterns.behavioral import ConsoleLogger, ILogger, NewFeedbackTopic, SmsNotifier, EmailNotifier
 
 """
 Singleton
@@ -13,7 +16,7 @@ class Singleton(type):
         name = ''
         if args:
             name = args[0]
-        if kwargs:
+        if kwargs and 'name' in kwargs:
             name = kwargs['name']
         if name in cls.__instance:
             return cls.__instance[name]
@@ -23,14 +26,14 @@ class Singleton(type):
 
 
 class FlexLogger(metaclass=Singleton):
-    __formatting = "[LOG {}]: {}"
-
-    def __init__(self, name='root'):
+    def __init__(self, name='root', logging_strategy: ILogger = ConsoleLogger()):
+        self.__formatting = "[LOG {}]: {}"
         self.name = name
+        self.logging_strategy = logging_strategy
 
-    @classmethod
-    def log(cls, text):
-        print(cls.__formatting.format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), text))
+    def log(self, text):
+        formatted_text = self.__formatting.format(datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), text)
+        self.logging_strategy.log(formatted_text)
 
 
 """
@@ -101,10 +104,25 @@ class Tag:
         return result
 
 
-class FlexEngine:
+class Feedback:
+    def __init__(self, username, email, text):
+        self.username = username
+        self.email = email
+        self.text = text
+
+
+class FlexEngine(NewFeedbackTopic):
     def __init__(self):
         self.materials = []
         self.tags = []
+        self.feedback_list: List[Feedback] = []
+        super().__init__()
+
+    def process_feedback(self, name, email, text):
+        feedback = Feedback(name, email, text)
+        self.feedback_list.append(feedback)
+        self.notify(feedback)
+        return feedback
 
     @staticmethod
     def create_tag(name):

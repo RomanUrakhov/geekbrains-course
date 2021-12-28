@@ -1,15 +1,19 @@
 from datetime import datetime
 
-from app import app
+from app import app, logger
+from app.patterns.behavioral import EmailNotifier, SmsNotifier, JSONSerializer
 from app.patterns.structural import profile
 from flex_framework.template_manager import render_template
 from flex_framework.request import BaseRequest
-from app.patterns.creational import FlexEngine, FlexLogger
+from app.patterns.creational import FlexEngine
 
 from app.repository import list_articles, list_courses, get_my_favourites
 
 engine = FlexEngine()
-logger = FlexLogger()
+
+sms_notifier = SmsNotifier()
+email_notifier = EmailNotifier()
+engine.observers.extend([sms_notifier, email_notifier])
 
 
 @app.route('/')
@@ -54,7 +58,7 @@ def feedback(request: BaseRequest):
         return '200 OK', render_template('feedback.html')
     elif request.method == 'POST':
         data = request.get_form_data()
-        print(data)
+        engine.process_feedback(name=data['name'], email=data['email'], text=data['message'])
         return '200 OK', render_template('feedback.html')
 
 
@@ -122,3 +126,9 @@ def material_list(request: BaseRequest):
         material_tags = []
         related_materials = engine.materials
     return '200 OK', render_template('materials.html', related_tags=material_tags, materials=related_materials)
+
+
+@app.route('/api/feedback/')
+def json_data(request: BaseRequest):
+    feedback_list = engine.feedback_list
+    return '200 OK', JSONSerializer(feedback_list).save()
